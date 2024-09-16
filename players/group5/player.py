@@ -74,7 +74,7 @@ class G5_Player:
                     DOWN = 3
         """
         self.turns += 1
-        self.player_map.update_map(self.turns, current_percept.maze_state)
+        self.player_map.update_map(self.turns, current_percept)
 
         exists, end_pos = self.player_map.get_end_pos_if_known()
         if not exists:
