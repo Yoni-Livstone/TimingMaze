@@ -1,5 +1,6 @@
 import os
 import pickle
+import random
 import numpy as np
 import logging
 
@@ -78,8 +79,7 @@ class G5_Player:
 
         exists, end_pos = self.player_map.get_end_pos_if_known()
         if not exists:
-            return self.rng.integers(0, 4)
-
+            return random.randint(-1, 3)
         return converge(self.player_map.get_cur_pos(), end_pos)
 
 

@@ -212,5 +212,5 @@ class SimplePlayerMap(PlayerMapInterface):
         if percept.is_end_visible and self._end_pos is None:
             self.set_end_pos([percept.end_x, percept.end_y])
 
-    def get_seen_counts(self, relative_coord: List[List[int]]) -> List[int]:
-        return [self._cell_seen_count.get(tuple(self._get_map_coordinates(cell)), 0) for cell in relative_coord]
+    def get_seen_counts(self, relative_coords: List[List[int]]) -> List[int]:
+        return [self._cell_seen_count.get(tuple(self._get_map_coordinates(c)), 0) for c in relative_coords]
