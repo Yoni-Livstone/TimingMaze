@@ -59,12 +59,12 @@ class PlayerMapInterface(ABC):
         pass
 
     @abstractmethod
-    def update_map(self, turn_num: int, precept: TimingMazeState):  # TODO: check type of maze_state
+    def update_map(self, turn_num: int, percept: TimingMazeState):  # TODO: check type of maze_state
         """Function which updates the map with the given maze state
 
             Args:
                 turn_num (int): Integer representing the current turn number
-                precept (TimingMazeState): TimingMazeState object describing the current state of the visible maze
+                percept (TimingMazeState): TimingMazeState object describing the current state of the visible maze
         """
         pass
 
@@ -182,8 +182,8 @@ class SimplePlayerMap(PlayerMapInterface):
             self._boundaries[constants.DOWN] = door_coordinates[1]
             self._boundaries[constants.UP] = door_coordinates[1] - map_e2e_dist
 
-    def update_map(self, turn_num: int, precept: TimingMazeState):
-        maze_state = precept.maze_state
+    def update_map(self, turn_num: int, percept: TimingMazeState):
+        maze_state = percept.maze_state
 
         cells_seen = set()
         # before = self._door_freqs.copy()
@@ -209,8 +209,8 @@ class SimplePlayerMap(PlayerMapInterface):
         for cell in cells_seen:
             self._cell_seen_count[cell] += 1
 
-        if precept.is_end_visible and self._end_pos is None:
-            self.set_end_pos([precept.end_x, precept.end])
+        if percept.is_end_visible and self._end_pos is None:
+            self.set_end_pos([percept.end_x, percept.end_y])
 
     def get_seen_counts(self, relative_coord: List[List[int]]) -> List[int]:
         return [self._cell_seen_count.get(tuple(self._get_map_coordinates(cell)), 0) for cell in relative_coord]
