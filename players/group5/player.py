@@ -34,15 +34,14 @@ class G5_Player:
 
         for i in range(self.radius):
             for j in range(self.radius):
-                if self.player_map.get_seen_counts([-i, -j])[0]>0:
+                if self.player_map.get_seen_counts([[-i, -j]])[0]>0:
                     nw += 1
-                if self.player_map.get_seen_counts([i, -j])[0]>0:
+                if self.player_map.get_seen_counts([[i, -j]])[0]>0:
                     sw += 1
-                if self.player_map.get_seen_counts([-i, j])[0]>0:
+                if self.player_map.get_seen_counts([[-i, j]])[0]>0:
                     ne += 1
-                if self.player_map.get_seen_counts([i, j])[0]>0:
+                if self.player_map.get_seen_counts([[i, j]])[0]>0:
                     se += 1
-
         best_diagonal = max(nw, sw, ne, se)
         if best_diagonal == nw:
             if ne > sw:
@@ -79,7 +78,7 @@ class G5_Player:
 
         exists, end_pos = self.player_map.get_end_pos_if_known()
         if not exists:
-            return random.randint(-1, 3)
+            return self.simple_search()
         return converge(self.player_map.get_cur_pos(), end_pos)
 
 
