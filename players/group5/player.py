@@ -41,77 +41,33 @@ class G5_Player:
         """
         self.turns += 1
         self.player_map.update_map(self.turns, current_percept.maze_state)
-        return constants.UP
 
-        # direction = [0, 0, 0, 0]
-        # for maze_state in current_percept.maze_state:
-        #     if maze_state[0] == 0 and maze_state[1] == 0:
-        #         direction[maze_state[2]] = maze_state[3]
+        # Search algorithm
+        if not current_percept.is_end_visible:
+            self.logger.info("End is visible at (%d, %d)", current_percept.end_x, current_percept.end_y)
+            
+            nw, sw, ne, se = 0, 0, 0, 0
 
-        # if current_percept.is_end_visible:
-        #     if abs(current_percept.end_x) >= abs(current_percept.end_y):
-        #         if current_percept.end_x > 0 and direction[constants.RIGHT] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 1 and maze_state[1] == 0 and maze_state[2] == constants.LEFT
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.RIGHT
-        #         if current_percept.end_x < 0 and direction[constants.LEFT] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == -1 and maze_state[1] == 0 and maze_state[2] == constants.RIGHT
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.LEFT
-        #         if current_percept.end_y < 0 and direction[constants.UP] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 0 and maze_state[1] == -1 and maze_state[2] == constants.DOWN
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.UP
-        #         if current_percept.end_y > 0 and direction[constants.DOWN] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 0 and maze_state[1] == 1 and maze_state[2] == constants.UP
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.DOWN
-        #         return constants.WAIT
-        #     else:
-        #         if current_percept.end_y < 0 and direction[constants.UP] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 0 and maze_state[1] == -1 and maze_state[2] == constants.DOWN
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.UP
-        #         if current_percept.end_y > 0 and direction[constants.DOWN] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 0 and maze_state[1] == 1 and maze_state[2] == constants.UP
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.DOWN
-        #         if current_percept.end_x > 0 and direction[constants.RIGHT] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == 1 and maze_state[1] == 0 and maze_state[2] == constants.LEFT
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.RIGHT
-        #         if current_percept.end_x < 0 and direction[constants.LEFT] == constants.OPEN:
-        #             for maze_state in current_percept.maze_state:
-        #                 if (maze_state[0] == -1 and maze_state[1] == 0 and maze_state[2] == constants.RIGHT
-        #                         and maze_state[3] == constants.OPEN):
-        #                     return constants.LEFT
-        #         return constants.WAIT
-        # else:
-        #     if direction[constants.LEFT] == constants.OPEN:
-        #         for maze_state in current_percept.maze_state:
-        #             if (maze_state[0] == -1 and maze_state[1] == 0 and maze_state[2] == constants.RIGHT
-        #                     and maze_state[3] == constants.OPEN):
-        #                 return constants.LEFT
-        #     if direction[constants.DOWN] == constants.OPEN:
-        #         for maze_state in current_percept.maze_state:
-        #             if (maze_state[0] == 0 and maze_state[1] == 1 and maze_state[2] == constants.UP
-        #                     and maze_state[3] == constants.OPEN):
-        #                 return constants.DOWN
-        #     if direction[constants.RIGHT] == constants.OPEN:
-        #         for maze_state in current_percept.maze_state:
-        #             if (maze_state[0] == 1 and maze_state[1] == 0 and maze_state[2] == constants.LEFT
-        #                     and maze_state[3] == constants.OPEN):
-        #                 return constants.RIGHT
-        #     if direction[constants.UP] == constants.OPEN:
-        #         for maze_state in current_percept.maze_state:
-        #             if (maze_state[0] == 0 and maze_state[1] == -1 and maze_state[2] == constants.DOWN
-        #                     and maze_state[3] == constants.OPEN):
-        #                 return constants.UP
-        #     return constants.WAIT
+            for i in range(self.radius):
+                for j in range(self.radius):
+                    if self.player_map.is_visited([-i, -j]):
+                        nw += 1
+                    if self.player_map.is_visited([i, -j]):
+                        sw += 1
+                    if self.player_map.is_visited([-i, j]):
+                        ne += 1
+                    if self.player_map.is_visited([i, j]):
+                        se += 1
+
+            best_diagonal = max(nw, sw, ne, se)
+            if best_diagonal == nw:
+                # TODO figure out how to check which paths are open
+                # if only one direction between UP and LEFT is possible, go that way
+            
+        # Converge algorithm
+        else:
+            self.logger.info("End is not visible yet.")
+            return constants.WAIT # Replace with converge algorithm @Yoni
+        
+    def is_path_open(self, current_percept: TimingMazeState, direction: int) -> bool:
+        self.player_map.c
